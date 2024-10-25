@@ -1,0 +1,47 @@
+.directory-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 80vh;
+    background-color: #f9f9f9;
+    padding: 20px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+  }
+  
+  .directory-heading {
+    color: #333;
+    font-size: 28px;
+    margin-bottom: 30px;
+    font-family: 'Arial', sans-serif;
+  }
+  
+  .directory-options {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+  
+  .directory-option {
+    background-color: #5cb85c;
+    color: white;
+    padding: 15px 30px;
+    border-radius: 5px;
+    text-align: center;
+    font-size: 20px;
+    cursor: pointer;
+    transition: transform 0.3s, background-color 0.3s;
+  }
+  
+  .directory-option:hover {
+    background-color: #4cae4c;
+    transform: translateY(-5px);
+  }
+  
+  .directory-option h3 {
+    margin: 0;
+    font-family: 'Arial', sans-serif;
+    font-weight: bold;
+  }
+  

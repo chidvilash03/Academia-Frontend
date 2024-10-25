@@ -1,0 +1,48 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 20px;
+  }
+  
+  .home-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 70vh; /* Full height of the viewport */
+  }
+  
+  h1 {
+    color: #333;
+    margin-bottom: 40px;
+    font-size: 2.5em; /* Larger font size for the heading */
+  }
+  
+  .options-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .option-button {
+    background-color: #5cb85c;
+    border: none;
+    color: white;
+    padding: 15px 30px; /* Increased padding for better button size */
+    text-align: center;
+    text-decoration: none;
+    font-size: 18px; /* Larger font size for buttons */
+    cursor: pointer;
+    border-radius: 4px;
+    transition: background-color 0.3s; /* Smooth transition for hover effect */
+  }
+  
+  .option-button:hover {
+    background-color: #4cae4c; /* Darker green on hover */
+  }
+  
+  .option-button:focus {
+    outline: none; /* Remove outline on focus */
+  }
+  
