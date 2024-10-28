@@ -4,11 +4,14 @@ import axios from 'axios';
 import './index.css';
 import Navbar from '../../Navbar';
 
-
 const StudentForm = () => {
   const navigate = useNavigate();
 
   const [activeTab, setActiveTab] = useState('student');
+  const [sections, setSections] = useState([]);
+  const [classes, setClasses] = useState([]);
+  const [hostels, setHostels] = useState([]);
+  
   const [student, setStudent] = useState({
     enrollmentNo: 0,
     firstName: '',
@@ -59,12 +62,35 @@ const StudentForm = () => {
       isActive: true,
       hostelId: ''
     },
+    Photo: '',
     isActive: true
   });
 
-  const [sections, setSections] = useState([]);
-  const [classes, setClasses] = useState([]);
-  const [hostels, setHostels] = useState([]);
+  // console.log(student)
+
+  const handleFileChange = async (event) => {
+    const file = event.target.files[0];
+    if (file) {
+        const formData = new FormData();
+        formData.append('file', file);
+        formData.append('upload_preset', 'student-photo'); 
+
+        try {
+            const response = await axios.post(`https://api.cloudinary.com/v1_1/dcqgdxcz3/image/upload`, formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data', 
+                },
+            });
+            // console.log(response.data.secure_url);
+            setStudent({ ...student, Photo: response.data.secure_url }); 
+        } catch (error) {
+            console.error("Error uploading image:", error.response ? error.response.data : error.message); 
+        }
+    } else {
+        console.error("No file selected."); 
+    }
+};
+
 
   useEffect(() => {
     axios.get('https://localhost:7211/api/Section/GetAllSectionDetails')
@@ -103,12 +129,13 @@ const StudentForm = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     const studentData = { ...student };
-    //console.log(studentData);
     // Send studentData to your API
     axios.post('https://localhost:7211/api/Student/AddStudentDetails', studentData)
-      .then(response => console.log("Student added successfully:", response.data))
+      .then(response => {
+        console.log("Student added successfully:", response.data);
+        navigate('/all-students');
+      })
       .catch(error => console.error("Error adding student:", error));
-    navigate('/all-students');
   };
 
   const renderTabContent = () => {
@@ -152,7 +179,7 @@ const StudentForm = () => {
             {renderHostelerFields()}
             <div className="form-navigation">
               <button type="button" onClick={() => setActiveTab('guardian')} className="prev-button">Previous</button>
-              <button type="submit">Submit</button>
+              <button type="submit" onClick={handleSubmit}>Submit</button>
             </div>
           </div>
         );
@@ -245,9 +272,13 @@ const StudentForm = () => {
         <label>Aadhar Number:</label>
         <input type="text" name="aadharNumber" value={student.aadharNumber} onChange={handleChange} required />
       </div>
+      <div className="form-group">
+        <label>Upload Photo:</label>
+        <input type="file" accept="image/*" onChange={handleFileChange} required />
+      </div>
     </>
   );
-  
+
   const renderParentFields = () => (
     <>
       <div className="form-group">
@@ -301,7 +332,7 @@ const StudentForm = () => {
       </div>
       <div className="form-group">
         <label>Guardian's Occupation:</label>
-        <input type="text" name="guardianOCCupation" value={student.guardian.guardianOCCupation} onChange={handleGuardianChange} required />
+        <input type="text" name="guardianOccupation" value={student.guardian.guardianOccupation} onChange={handleGuardianChange} required />
       </div>
       <div className="form-group">
         <label>Guardian's Mobile:</label>
@@ -316,7 +347,7 @@ const StudentForm = () => {
         <input type="text" name="guardianAddress" value={student.guardian.guardianAddress} onChange={handleGuardianChange} required />
       </div>
       <div className="form-group">
-        <label>Guardian's Relationship:</label>
+        <label>Relationship:</label>
         <input type="text" name="guardianRelationShip" value={student.guardian.guardianRelationShip} onChange={handleGuardianChange} required />
       </div>
     </>
@@ -325,11 +356,11 @@ const StudentForm = () => {
   const renderHostelerFields = () => (
     <>
       <div className="form-group">
-        <label>Check-In Date:</label>
+        <label>Check In Date:</label>
         <input type="date" name="checkInDate" value={student.hosteler.checkInDate} onChange={handleHostelerChange} required />
       </div>
       <div className="form-group">
-        <label>Check-Out Date:</label>
+        <label>Check Out Date:</label>
         <input type="date" name="checkOutDate" value={student.hosteler.checkOutDate} onChange={handleHostelerChange} required />
       </div>
       <div className="form-group">
@@ -345,8 +376,8 @@ const StudentForm = () => {
   );
 
   return (
-    <div className='main-container' >
-      <Navbar/>
+    <div className='student-form' >
+      <Navbar />
       <form onSubmit={handleSubmit}>
         {renderTabContent()}
       </form>

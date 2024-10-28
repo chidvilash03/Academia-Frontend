@@ -24,97 +24,99 @@ const StudentsPage = () => {
     setSelectedStudent(null);
   };
 
-  // Convert enrollmentNo to string to avoid the error
   const filteredStudents = students.filter(student =>
     student.enrollmentNo.toString().toLowerCase().includes(searchTerm.toLowerCase())
   );
 
+
   return (
     <div>
-        <Navbar/>
-        <div className="students-container">
-            <h2>All Students</h2>
+      <Navbar />
+      <div className="students-container">
+        <h2>All Students</h2>
         <input
-            type="text"
-            placeholder="Search by enrollment number..."
-            className="search-bar"
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
+          type="text"
+          placeholder="Search by enrollment number..."
+          className="search-bar"
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
         />
 
         <table className="students-table">
-            <thead>
+          <thead>
             <tr>
-                <th>Enrollment No</th>
-                <th>First Name</th>
-                <th>Last Name</th>
-                <th>Admission Date</th>
-                <th>Action</th>
+              <th>Enrollment No</th>
+              <th>First Name</th>
+              <th>Last Name</th>
+              <th>Admission Date</th>
+              <th> Student Photo</th>
+              <th>Action</th>
             </tr>
-            </thead>
-            <tbody>
+          </thead>
+          <tbody>
             {filteredStudents.map((student) => (
-                <tr key={student.enrollmentNo}>
+              <tr key={student.enrollmentNo}>
                 <td>{student.enrollmentNo}</td>
                 <td>{student.firstName}</td>
                 <td>{student.lastName}</td>
                 <td>{new Date(student.admissionDate).toLocaleDateString()}</td>
+                <td>{<img src={student.photo}  alt="student-photo" width="125px" height="150px" />}</td>
                 <td>
-                    <button className="show-button" onClick={() => handleShowDetails(student)}>
+                  <button className="show-button" onClick={() => handleShowDetails(student)}>
                     Show
-                    </button>
+                  </button>
                 </td>
-                </tr>
+              </tr>
             ))}
-            </tbody>
+          </tbody>
         </table>
 
         {selectedStudent && (
-        <div className="student-details-modal">
-          <div className="modal-content">
-            <span className="close-button" onClick={handleCloseDetails}>&times;</span>
+          <div className="student-details-modal">
+            <div className="modal-content">
+              <span className="close-button" onClick={handleCloseDetails}>&times;</span>
 
-            {/* Student Information Section */}
-            <div className="section">
-              <h4 className="section-heading">Student Information</h4>
-              <div className="student-info"><strong>Enrollment No:</strong> {selectedStudent.enrollmentNo}</div>
-              <div className="student-info"><strong>First Name:</strong> {selectedStudent.firstName}</div>
-              <div className="student-info"><strong>Last Name:</strong> {selectedStudent.lastName}</div>
-              <div className="student-info"><strong>Admission Date:</strong> {new Date(selectedStudent.admissionDate).toLocaleDateString()}</div>
-              <div className="student-info"><strong>Date of Birth:</strong> {new Date(selectedStudent.dateOfBirth).toLocaleDateString()}</div>
-              <div className="student-info"><strong>Email:</strong> {selectedStudent.email}</div>
-              <div className="student-info"><strong>Mobile:</strong> {selectedStudent.mobile}</div>
+              <div className="section">
+                <h4 className="section-heading">Student Information</h4>
+                <div className='section-1'>
+                  <div>
+                    <div className="student-info"><strong>Enrollment No:</strong> {selectedStudent.enrollmentNo}</div>
+                    <div className="student-info"><strong>First Name:</strong> {selectedStudent.firstName}</div>
+                    <div className="student-info"><strong>Last Name:</strong> {selectedStudent.lastName}</div>
+                    <div className="student-info"><strong>Admission Date:</strong> {new Date(selectedStudent.admissionDate).toLocaleDateString()}</div>
+                    <div className="student-info"><strong>Date of Birth:</strong> {new Date(selectedStudent.dateOfBirth).toLocaleDateString()}</div>
+                    <div className="student-info"><strong>Email:</strong> {selectedStudent.email}</div>
+                    <div className="student-info"><strong>Mobile:</strong> {selectedStudent.mobile}</div>
+                  </div>
+                  <div className="student-photo">
+                    <img src={selectedStudent.photo} alt="Student" className="student-photo-img" width="200px" height="250px" />
+                  </div>
+                </div>
+              </div>
+
+              <div className="section">
+                <h4 className="section-heading">Parent Information</h4>
+                <div className="student-info"><strong>Father's Name:</strong> {selectedStudent.parent.fatherName}</div>
+                <div className="student-info"><strong>Mother's Name:</strong> {selectedStudent.parent.motherName}</div>
+                <div className="student-info"><strong>Father Mobile:</strong> {selectedStudent.parent.fatherMobile}</div>
+                <div className="student-info"><strong>Mother Mobile:</strong> {selectedStudent.parent.motherMobile}</div>
+              </div>
+
+              <div className="section">
+                <h4 className="section-heading">Guardian Information</h4>
+                <div className="student-info"><strong>Guardian's Name:</strong> {selectedStudent.guardian.guardianName}</div>
+                <div className="student-info"><strong>Guardian Mobile:</strong> {selectedStudent.guardian.guardianMobile}</div>
+              </div>
+
+              <div className="section">
+                <h4 className="section-heading">Hostel Information</h4>
+                <div className="student-info"><strong>Hostel Check-In Date:</strong> {new Date(selectedStudent.hosteler.checkInDate).toLocaleDateString()}</div>
+                <div className="student-info"><strong>Hostel Check-Out Date:</strong> {new Date(selectedStudent.hosteler.checkOutDate).toLocaleDateString()}</div>
+              </div>
             </div>
-
-            {/* Parent Information Section */}
-            <div className="section">
-              <h4 className="section-heading">Parent Information</h4>
-              <div className="student-info"><strong>Father's Name:</strong> {selectedStudent.parent.fatherName}</div>
-              <div className="student-info"><strong>Mother's Name:</strong> {selectedStudent.parent.motherName}</div>
-              <div className="student-info"><strong>Father Mobile:</strong> {selectedStudent.parent.fatherMobile}</div>
-              <div className="student-info"><strong>Mother Mobile:</strong> {selectedStudent.parent.motherMobile}</div>
-
-            </div>
-
-            {/* Guardian Information Section */}
-            <div className="section">
-              <h4 className="section-heading">Guardian Information</h4>
-              <div className="student-info"><strong>Guardian's Name:</strong> {selectedStudent.guardian.guardianName}</div>
-              <div className="student-info"><strong>Guardian Mobile:</strong> {selectedStudent.guardian.guardianMobile}</div>
-
-            </div>
-
-            {/* Hostel Information Section */}
-            <div className="section">
-              <h4 className="section-heading">Hostel Information</h4>
-              <div className="student-info"><strong>Hostel Check-In Date:</strong> {new Date(selectedStudent.hosteler.checkInDate).toLocaleDateString()}</div>
-              <div className="student-info"><strong>Hostel Check-Out Date:</strong> {new Date(selectedStudent.hosteler.checkOutDate).toLocaleDateString()}</div>
-            </div>
-
           </div>
-        </div>
-      )}
-        </div>
+        )}
+      </div>
     </div>
   );
 };
